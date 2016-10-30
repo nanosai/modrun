@@ -19,3 +19,17 @@ ModRun can load one version of C for module A, and another version of C for modu
 ModRun is still in early development, but the early proof-of-concept is working.
 
 
+## Example
+Here is a simple example of how to create a Repository object, load a module and read a class
+from it:
+
+
+    Repository repository = new Repository("D:\\data\\java\\products\\maven\\repository");
+
+    Module module = repository.getModule("com.nanosai", "grid-ops", "0.2.0");
+
+    Class aClass = module1.loadClass("com.nanosai.gridops.ion.read.IonReader");
+
+
+
+

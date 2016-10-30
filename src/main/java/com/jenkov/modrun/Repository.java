@@ -1,6 +1,7 @@
 package com.jenkov.modrun;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,17 +20,28 @@ public class Repository {
     }
 
 
-    public Module getModule(String groupId, String artifactId, String artifactVersion){
+    public Module getModule(String groupId, String artifactId, String artifactVersion) throws IOException {
+        groupId         = groupId.replace(".", "/");
+        artifactId      = artifactId.replace(".", "/");
+
         String fullModuleName = groupId + "/" + artifactId + "/" + artifactVersion;
 
         Module module = this.modules.get(fullModuleName);
 
-        if(module == null){
-            module = new Module(groupId, artifactId, artifactVersion);
-            this.modules.put(fullModuleName, module);
+        if(module != null){
+            return module;
         }
 
-        System.out.println("fullModuleName = " + fullModuleName);
+        String moduleStoragePath = this.rootDir + "/" + fullModuleName + "/" + artifactId + "-" + artifactVersion + ".jar";
+        ClassStorageZipFileImpl classStorage = new ClassStorageZipFileImpl(moduleStoragePath);
+        if(!classStorage.exists()){
+            throw new ModRunException("Module not found - looked at: " + moduleStoragePath );
+        }
+
+        ModuleClassLoader moduleClassLoader = new ModuleClassLoader(classStorage);
+
+        module = new Module(groupId, artifactId, artifactVersion, moduleClassLoader);
+        this.modules.put(fullModuleName, module);
 
         return module;
     }

@@ -7,6 +7,8 @@ import java.io.IOException;
  */
 public interface IClassStorage {
 
+    public boolean exists();
+
     public boolean containsClass(String className);
 
     public byte[] readClassBytes(String className) throws IOException;

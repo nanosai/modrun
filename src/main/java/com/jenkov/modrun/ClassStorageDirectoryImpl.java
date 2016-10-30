@@ -18,6 +18,11 @@ public class ClassStorageDirectoryImpl implements IClassStorage {
         this.classpath = classpath;
     }
 
+    @Override
+    public boolean exists() {
+        return new File(this.classpath).exists();
+    }
+
     public boolean containsClass(String className){
         Path path = toFullPath(className);
         File classFile = path.toFile();
@@ -30,11 +35,7 @@ public class ClassStorageDirectoryImpl implements IClassStorage {
         Path pathToClass = toFullPath(className);
         File classFile = pathToClass.toFile();
 
-        //System.out.println("classFile.getAbsolutePath().toString() = " + classFile.getAbsolutePath().toString());
-
         int fileLength = (int) classFile.length();
-
-        //System.out.println("fileLength = " + fileLength);
 
         byte[] classBytes = new byte[fileLength];
 
@@ -48,7 +49,6 @@ public class ClassStorageDirectoryImpl implements IClassStorage {
     private Path toFullPath(String className) {
         String pathToClass     = className.replace(".", "/");
         String fullPathToClass = this.classpath + pathToClass + ".class";
-        //System.out.println("fullPathToClass = " + fullPathToClass);
 
         return Paths.get(fullPathToClass);
     }

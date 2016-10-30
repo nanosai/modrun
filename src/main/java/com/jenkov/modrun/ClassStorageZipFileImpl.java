@@ -19,15 +19,24 @@ public class ClassStorageZipFileImpl implements IClassStorage {
     }
 
     @Override
+    public boolean exists() {
+        return true;
+    }
+
+    @Override
     public boolean containsClass(String className) {
-        String classPath = className.replace(".", "/");
+        String classPath = toClasspath(className);
 
         return this.zipFile.getEntry(classPath) != null;
     }
 
+    private String toClasspath(String className) {
+        return className.replace(".", "/") + ".class";
+    }
+
     @Override
     public byte[] readClassBytes(String className) throws IOException {
-        String classPath = className.replace(".", "/");
+        String classPath = toClasspath(className);
 
         ZipEntry zipEntry = this.zipFile.getEntry(classPath);
         byte[] classBytes = new byte[(int) zipEntry.getSize()];
