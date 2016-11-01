@@ -1,8 +1,8 @@
 package com.jenkov.modrun;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,6 +42,16 @@ public class Repository {
 
         module = new Module(groupId, artifactId, artifactVersion, moduleClassLoader);
         this.modules.put(fullModuleName, module);
+
+        String modulePomPath = this.rootDir + "/" + fullModuleName + "/" + artifactId + "-" + artifactVersion + ".pom";
+
+        try(Reader reader = new InputStreamReader(new FileInputStream(modulePomPath), "UTF-8")){
+            List<Dependency> dependencies = ModuleDependencyReader.readDependencies(reader);
+            for(Dependency dependency : dependencies){
+                //System.out.println("dependency = " + dependency);
+            }
+        }
+
 
         return module;
     }
