@@ -1,9 +1,13 @@
 package com.jenkov.modrun;
 
+import java.util.List;
+
 /**
  *
  */
 public class Module {
+
+    private String fullModuleName;
 
     private String groupId;
     private String artifactId;
@@ -11,19 +15,49 @@ public class Module {
 
     private ModuleClassLoader classLoader;
 
-    public Module(String groupId, String artifactId, String version, ModuleClassLoader classLoader) {
+    private List<Module> dependencies;
+
+    public Module(String groupId, String artifactId, String version) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
 
+        this.fullModuleName = groupId.replace(".", "/") + "/" + artifactId.replace(".", "/") + "/" + version;
+
         this.classLoader = classLoader;
     }
 
+    public String getFullName() {
+        return fullModuleName;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public String getArtifactId() {
+        return artifactId;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 
 
-    public Class loadClass(String className) throws ClassNotFoundException {
-        Class theClass = this.classLoader.resolveClass(className);
+    public void setClassLoader(ModuleClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
-        return theClass;
+    public ModuleClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+
+    public List<Module> getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(List<Module> dependencies) {
+        this.dependencies = dependencies;
     }
 }
