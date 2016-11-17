@@ -14,8 +14,12 @@ public class ModuleClassLoaderTest {
 
     @Test
     public void test() throws ClassNotFoundException {
+        Repository repository = new Repository("test-repo");
+
+        Module module = new Module("com.nanosai", "ModRun", "1.0.0");
+
         ClassStorageDirectoryImpl classStorage = new ClassStorageDirectoryImpl("target/classes/");
-        ModuleClassLoader classLoader = new ModuleClassLoader(classStorage, ClassLoader.getSystemClassLoader());
+        ModuleClassLoader classLoader = new ModuleClassLoader(repository, module, classStorage);
 
         String className = "com.jenkov.modrun.mod.TestPojo";
         Class aClass = classLoader.loadClass(className);
@@ -32,12 +36,15 @@ public class ModuleClassLoaderTest {
     }
 
     private static void loadAndRun(String modName) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Repository repository = new Repository("test-repo");
+
+        Module module = new Module("com.nanosai", "ModRun", "1.0.0");
 
         ClassStorageDirectoryImpl modClassStorage = new ClassStorageDirectoryImpl(modName);
-        ModuleClassLoader modClassLoader    = new ModuleClassLoader(modClassStorage);
+        ModuleClassLoader modClassLoader    = new ModuleClassLoader(repository, module, modClassStorage);
 
         ClassStorageDirectoryImpl rootClassStorage = new ClassStorageDirectoryImpl("rootmod/");
-        ModuleClassLoader rootClassLoader = new ModuleClassLoader(rootClassStorage, modClassLoader);
+        ModuleClassLoader rootClassLoader = new ModuleClassLoader(repository, module, rootClassStorage);
 
         Class rootModClass = rootClassLoader.loadClass("com.jenkov.modrun.rootmod.RootModMain");
 

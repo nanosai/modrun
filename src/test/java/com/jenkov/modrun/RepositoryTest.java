@@ -15,60 +15,55 @@ import static org.junit.Assert.*;
  */
 public class RepositoryTest {
 
-    String repoRootDir    = "D:\\data\\java\\products\\maven\\repository";
-    String filePath       = "\\com\\nanosai\\grid-ops\\0.2.0\\grid-ops-0.2.0.jar";
+    //String repoRootDir    = "D:\\data\\java\\products\\maven\\repository";
+    String repoRootDir    = "test-repo";
 
-    Repository repository = new Repository("D:\\data\\java\\products\\maven\\repository");
+    Repository repository = new Repository(repoRootDir);
 
     @Test
-    public void testBuildDependencies() {
-        Module module = new Module("com.nanosai", "grid-ops", "0.2.0");
-        repository.buildDependencyGraph(module);
+    public void testBuildDependencies() throws IOException {
+        Module module1 = repository.createModule("com.nanosai", "ModRunDepA", "1.0.0");
+        repository.buildDependencyGraph(module1);
 
-        List<Module> dependencies = module.getDependencies();
+        List<Module> dependencies1 = module1.getDependencies();
 
-        assertEquals(0, dependencies.size());
+        assertEquals(1, dependencies1.size());
+
+        Module dependency1 = dependencies1.get(0);
+
+        assertEquals("com.nanosai", dependency1.getGroupId());
+        assertEquals("ModRunDepC" , dependency1.getArtifactId());
+        assertEquals("1.0.0"      , dependency1.getVersion());
+
+        Module module2 = repository.createModule("com.nanosai", "ModRunDepB", "1.0.0");
+
+        List<Module> dependencies2 = module2.getDependencies();
+
+        assertEquals(1, dependencies2.size());
+
+        Module dependency2 = dependencies2.get(0);
+
+        assertEquals("com.nanosai", dependency2.getGroupId());
+        assertEquals("ModRunDepC" , dependency2.getArtifactId());
+        assertEquals("2.0.0"      , dependency2.getVersion());
+
     }
 
     @Test
     public void test() throws IOException, ClassNotFoundException {
 
-        Module module1 = repository.createModule("com.nanosai", "grid-ops", "0.2.0");
-        Module module2 = repository.createModule("com.nanosai", "grid-ops", "0.2.0");
+        Module module1 = repository.createModule("com.nanosai", "ModRunDepA", "1.0.0");
+        Module module2 = repository.createModule("com.nanosai", "ModRunDepA", "1.0.0");
 
         assertNotSame(module1, module2);
 
-        Class aClass = module1.loadClass("com.nanosai.gridops.ion.read.IonReader");
+        Class theClass = repository.loadClass(module1, "com.nanosai.modrun.a.ComponentA");
 
-        assertNotNull(aClass);
+        assertNotNull(theClass);
 
-        assertEquals("com.nanosai.gridops.ion.read.IonReader", aClass.getName());
+        assertEquals("com.nanosai.modrun.a.ComponentA", theClass.getName());
     }
 
 
-    @Test
-    public void testZip() throws IOException {
-        ZipFile zipFile = new ZipFile(repoRootDir + filePath);
 
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-        while(entries.hasMoreElements()){
-            ZipEntry entry = entries.nextElement();
-            if(entry.isDirectory()){
-                System.out.println("dir  : " + entry.getName());
-            } else {
-                System.out.println("file : " + entry.getName());
-            }
-        }
-    }
-
-
-    @Test
-    public void testZip2() throws IOException {
-        ZipFile zipFile = new ZipFile(repoRootDir + filePath);
-
-        ZipEntry entry = zipFile.getEntry("com/nanosai/gridops/host/Host.class");
-
-        System.out.println("entry.getName() = " + entry.getName());
-    }
 }
