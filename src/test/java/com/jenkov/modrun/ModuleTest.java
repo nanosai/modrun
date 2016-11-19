@@ -65,7 +65,7 @@ public class ModuleTest {
         assertSame(theClass2_2, theClass2);
         assertEquals(2, modRunDepA.getLoadedClasses().size());
         assertEquals(2, modRunDepB.getLoadedClasses().size());
-    
+
 
     }
 

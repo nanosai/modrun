@@ -6,7 +6,7 @@
 
     <groupId>com.nanosai</groupId>
     <artifactId>ModRun</artifactId>
-    <version>0.0.1</version>
+    <version>0.8.0</version>
 
     <dependencies>
         <dependency>

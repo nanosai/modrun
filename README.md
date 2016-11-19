@@ -1,6 +1,5 @@
 # ModRun
-ModRun is a Java classloader which can load and run classes directly from 
-Maven repositories and resolve dependencies at runtime. 
+ModRun can load and run classes directly from Maven repositories and resolve dependencies at runtime. 
 
 ModRun is short for Module Runner. In Maven context a "module" is the same as an artifact in
 a specific version.
