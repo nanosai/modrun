@@ -3,10 +3,7 @@ package com.jenkov.modrun;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import static org.junit.Assert.*;
 
@@ -46,8 +43,8 @@ public class RepositoryTest {
         assertEquals("com.nanosai", dependency2.getGroupId());
         assertEquals("ModRunDepC" , dependency2.getArtifactId());
         assertEquals("2.0.0"      , dependency2.getVersion());
-
     }
+
 
     @Test
     public void test() throws IOException, ClassNotFoundException {
@@ -56,12 +53,18 @@ public class RepositoryTest {
         Module module2 = repository.createModule("com.nanosai", "ModRunDepA", "1.0.0");
 
         assertNotSame(module1, module2);
+    }
 
-        Class theClass = repository.loadClass(module1, "com.nanosai.modrun.a.ComponentA");
+    @Test
+    public void testGetFullPathForModule() throws Exception {
+        Module module1 = repository.createModule("com.nanosai", "ModRunDepA", "1.0.0");
 
-        assertNotNull(theClass);
+        String modulePath = repository.createPathToModuleJar(module1);
 
-        assertEquals("com.nanosai.modrun.a.ComponentA", theClass.getName());
+        assertEquals("test-repo/com/nanosai/ModRunDepA/1.0.0/ModRunDepA-1.0.0.jar", modulePath);
+
+
+
     }
 
 
