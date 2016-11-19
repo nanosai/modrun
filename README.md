@@ -24,11 +24,18 @@ Here is a simple example of how to create a Repository object, load a module and
 from it:
 
 
-    Repository repository = new Repository("D:\\data\\java\\products\\maven\\repository");
+    Repository repository = new Repository("test-repo");
 
-    Module module = repository.getModule("com.nanosai", "grid-ops", "0.2.0");
+    Module module   = repository.createModule("com.nanosai", "ModRunDepA", "1.0.0");
 
-    Class aClass = module1.loadClass("com.nanosai.gridops.ion.read.IonReader");
+    Class  theClass = module.getClass("com.nanosai.a.ComponentA");
+    
+    Object theObject = theClass.newInstance();
+    Method method    = theClass.getMethod("doIt");
+    String result    = (String) method.invoke(theObject, new Object[0]);
+    
+    System.out.println(result);
+    
 
 
 
