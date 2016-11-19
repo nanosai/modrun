@@ -2,6 +2,8 @@ package com.jenkov.modrun;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -19,6 +21,9 @@ public class Module {
     private ModuleClassLoader classLoader;
 
     private List<Module> dependencies;
+
+    private Map<String, Class> loadedClasses = new ConcurrentHashMap<>();
+
 
     public Module(String groupId, String artifactId, String version) {
         this.groupId = groupId;
@@ -65,7 +70,9 @@ public class Module {
         this.dependencies = dependencies;
     }
 
-
+    public Map<String, Class> getLoadedClasses() {
+        return loadedClasses;
+    }
 
     public Class getClass(String className) throws IOException {
         Module ownerModule = findClass(className);
@@ -90,9 +97,20 @@ public class Module {
     }
 
     public Class getClassFromThisModule(String className) throws IOException {
-        if(containsClass(className)){
-            byte[] bytes = getClassStorage().readClassBytes(className);
-            return getClassLoader().defClass(className, bytes, 0, bytes.length);
+        synchronized(this){
+            Class theClass = null;
+            theClass = this.loadedClasses.get(className);
+            if(theClass != null){
+                return theClass;
+            }
+
+
+            if(containsClass(className)){
+                byte[] bytes = getClassStorage().readClassBytes(className);
+                theClass = getClassLoader().defClass(className, bytes, 0, bytes.length);
+                this.loadedClasses.put(className, theClass);
+                return theClass;
+            }
         }
 
         return null;

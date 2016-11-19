@@ -59,6 +59,13 @@ public class ModuleTest {
 
         assertEquals("A text from ObjectB - Version 2", result2);
 
+        //test getting the same class twice
+        Class theClass2_2 = modRunDepB.getClass(className2);
+        assertNotNull(theClass2_2);
+        assertSame(theClass2_2, theClass2);
+        assertEquals(2, modRunDepA.getLoadedClasses().size());
+        assertEquals(2, modRunDepB.getLoadedClasses().size());
+    
 
     }
 
