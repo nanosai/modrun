@@ -1,5 +1,8 @@
-# ModRun
-ModRun can load and run classes directly from Maven repositories and resolve dependencies at runtime. 
+# ModRun - Modularity for Java Without Jigsaw
+ModRun can load and run classes directly from Maven repositories and resolve dependencies at runtime.
+For a more complete tutorial, read this:
+
+[ModRun Tutorial]()http://tutorials.jenkov.com/modrun/index.html)
 
 ModRun is short for Module Runner. In Maven context a "module" is the same as an artifact in
 a specific version.
