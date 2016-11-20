@@ -18,8 +18,6 @@ ModRun can even load multiple versions of the same artifact into the same JVM. I
 depends on module A and module B, and A and B both depend on module C - but in different versions,
 ModRun can load one version of C for module A, and another version of C for module B.
 
-ModRun is still in early development, but the early proof-of-concept is working.
-
 
 ## Example
 Here is a simple example of how to create a Repository object, load a module and read a class
