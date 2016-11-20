@@ -4,7 +4,7 @@ For a more complete tutorial, read this:
 
 [ModRun Tutorial]()http://tutorials.jenkov.com/modrun/index.html)
 
-ModRun is short for Module Runner. In Maven context a "module" is the same as an artifact in
+ModRun is short for Module Runner. In Maven context a "module" is an artifact in
 a specific version.
 
 
