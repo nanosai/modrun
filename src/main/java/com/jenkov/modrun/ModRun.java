@@ -65,7 +65,7 @@ public class ModRun {
         }
 
         try {
-            mainMethod.invoke(null, argsToMainMethod);
+            mainMethod.invoke(null, (Object) argsToMainMethod);
         } catch (IllegalAccessException e) {
             System.out.println("main(String[] args) method not accessible: " + e.getMessage());
         } catch (InvocationTargetException e) {
