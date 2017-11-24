@@ -72,9 +72,18 @@ public class Repository {
 
     public void installModule(String remoteRepositoryBaseUrl, String groupId, String artifactId, String artifactVersion) throws IOException {
         ModuleDownloader moduleDownloader = new ModuleDownloader(remoteRepositoryBaseUrl, this.rootDir);
-
         moduleDownloader.download(groupId, artifactId, artifactVersion);
     }
 
+    public void installModuleAndDependencies(String remoteRepositoryBaseUrl, String groupId, String artifactId, String artifactVersion) throws IOException {
+        installModule(remoteRepositoryBaseUrl, groupId, artifactId, artifactVersion);
+
+        Module module = new Module(groupId, artifactId, artifactVersion);
+        List<Dependency> dependencies = readDependenciesForModule(module);
+
+        for(Dependency dependency : dependencies){
+            installModuleAndDependencies(remoteRepositoryBaseUrl, dependency.groupId, dependency.artifactId, dependency.version);
+        }
+    }
 
 }
