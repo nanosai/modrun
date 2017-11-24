@@ -13,8 +13,6 @@ public class Repository {
 
     private String rootDir = null;
 
-    //private Map<String, Module> modules = new ConcurrentHashMap<>();
-
     public Repository(String rootDir) {
         this.rootDir = rootDir;
     }
@@ -70,6 +68,12 @@ public class Repository {
         return this.rootDir + "/" + module.getFullName()
                             + "/" + module.getArtifactId()
                             + "-" + module.getVersion() + ".pom";
+    }
+
+    public void installModule(String remoteRepositoryBaseUrl, String groupId, String artifactId, String artifactVersion) throws IOException {
+        ModuleDownloader moduleDownloader = new ModuleDownloader(remoteRepositoryBaseUrl, this.rootDir);
+
+        moduleDownloader.download(groupId, artifactId, artifactVersion);
     }
 
 

@@ -13,8 +13,8 @@ public class ModuleDownloader {
     private String remoteRepositoryBaseUrl;
     private String localRepositoryBaseFilePath;
 
-    public ModuleDownloader(String repositoryBaseUrl, String localRepositoryBaseFilePath) {
-        this.remoteRepositoryBaseUrl = repositoryBaseUrl;
+    public ModuleDownloader(String remoteRepositoryBaseUrl, String localRepositoryBaseFilePath) {
+        this.remoteRepositoryBaseUrl = remoteRepositoryBaseUrl;
         if(!this.remoteRepositoryBaseUrl.endsWith("/")){
             this.remoteRepositoryBaseUrl += "/";
         }
