@@ -82,7 +82,9 @@ public class Repository {
         List<Dependency> dependencies = readDependenciesForModule(module);
 
         for(Dependency dependency : dependencies){
-            installModuleAndDependencies(remoteRepositoryBaseUrl, dependency.groupId, dependency.artifactId, dependency.version);
+            if(!"test".equals(dependency.scope)){
+                installModuleAndDependencies(remoteRepositoryBaseUrl, dependency.groupId, dependency.artifactId, dependency.version);
+            }
         }
     }
 

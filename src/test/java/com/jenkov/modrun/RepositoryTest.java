@@ -62,9 +62,22 @@ public class RepositoryTest {
         String modulePath = repository.createPathToModuleJar(module1);
 
         assertEquals("test-repo/com/nanosai/ModRunDepA/1.0.0/ModRunDepA-1.0.0.jar", modulePath);
+    }
 
 
+    @Test
+    public void testInstallModule() throws IOException {
+        String remoteRepoBaseUrl = "http://repo1.maven.org/maven2/";
+        String localRepoBaseFilePath  = "test-repo";
 
+        Repository repository = new Repository(localRepoBaseFilePath);
+
+        String groupId         = "com.fasterxml.jackson.core";
+        String artifactId      = "jackson-annotations"; // "-databind", "-core", "-annotations"
+        String artifactVersion = "2.9.2";
+
+        //repository.installModule(remoteRepoBaseUrl, groupId, artifactId, artifactVersion);
+        repository.installModuleAndDependencies(remoteRepoBaseUrl, groupId, artifactId, artifactVersion);
     }
 
 
